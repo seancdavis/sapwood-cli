@@ -61,8 +61,33 @@ when 'install'
 # ======================================
 when 'start'
   pwd = `pwd`
+  say("=> Booting Sapwood server...")
   system("cd #{home}/.sapwood && bundle exec rails s -d -p 4141")
   system("cd #{pwd}")
+  msg  = "\nYou're up and running. Sapwood is now available at "
+  msg += "http://localhost:4141."
+  say(msg)
+# ======================================
+# Stop Rails Server
+# ======================================
+when 'stop'
+  say("=> Sapwood server going down...")
+  system("kill $(lsof -ti :4141)")
+  say("=> Done.")
+# ======================================
+# Restart Rails Server
+# ======================================
+when 'restart'
+  say("=> Sapwood server going down...")
+  system("kill $(lsof -ti :4141)")
+  say("=> Done.")
+  pwd = `pwd`
+  say("=> Booting Sapwood server...")
+  system("cd #{home}/.sapwood && bundle exec rails s -d -p 4141")
+  system("cd #{pwd}")
+  msg  = "\nYou're up and running. Sapwood is now available at "
+  msg += "http://localhost:4141."
+  say(msg)
 # ======================================
 # Update Development App
 # ======================================
