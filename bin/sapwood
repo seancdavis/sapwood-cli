@@ -16,10 +16,10 @@ when 'install'
   # verify existance of production database (by asking)
   choose do |menu|
     menu.prompt = "Do you have a production database installed and running? "
-    menu.choice(:yes) do
+    menu.choice("Fuck yeah!") do
       say("\nAwesome! Let's get some info about that database...")
     end
-    menu.choices(:no) do
+    menu.choices("No, I have trouble reading directions.") do
       msg  = "\n<%= color('Oh no!', [:bold, :red]) %> "
       msg += "You need to get your production app up and running first."
       msg += "\nThis is just a way to access production data."
