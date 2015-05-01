@@ -31,7 +31,8 @@ when 'install'
   db_password = ask("User's Password (will show as Xs): ") { |q| q.echo = "x" }
   # clone the repo
   say("Good stuff, bro! Now, I shall install the developer app...\n")
-  system "git clone git@github.com:seancdavis/sapwood-developer.git ~/.sapwood"
+  repo_url = 'https://github.com/seancdavis/sapwood-developer.git'
+  system "git clone #{repo_url} ~/.sapwood"
   # write the database config
   say("Adding database config...")
   db_config = "development:\n  adapter: postgresql\n  encoding: unicode"
