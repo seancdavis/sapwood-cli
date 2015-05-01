@@ -44,6 +44,9 @@ when 'install'
   db_config += "\n  password: #{db_password}\n  port: #{db_port}\n"
   db_file = "#{home}/.sapwood/config/database.yml"
   File.open(db_file, 'w+') { |f| f.write(db_config) }
+  # install gems
+  say("Installing gems...")
+  system("cd #{home}/.sapwood && bundle install")
   # finish up
   msg  = "All done! Just run <%= color('sapwood start', [:green, :bold]) %> "
   msg += "to start the server."
@@ -54,6 +57,7 @@ when 'install'
 when 'update'
   pwd = `pwd`
   system("cd #{home}/.sapwood && git fetch && git pull origin master")
+  system("cd #{home}/.sapwood && bundle install")
   system("cd #{pwd}")
 # ======================================
 # Missing Argument
