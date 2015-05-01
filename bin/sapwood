@@ -41,16 +41,28 @@ when 'install'
   say("Adding database config...")
   db_config = "development:\n  adapter: postgresql\n  encoding: unicode"
   db_config += "\n  pool: 5\n  host: #{db_host}\n  username: #{db_username}"
-  db_config += "\n  password: #{db_password}\n  port: #{db_port}\n"
+  db_config += "\n  password: #{db_password}\n  port: #{db_port}"
+  db_config += "\n  database: #{db_name}\n"
   db_file = "#{home}/.sapwood/config/database.yml"
   File.open(db_file, 'w+') { |f| f.write(db_config) }
   # install gems
   say("Installing gems...")
   system("cd #{home}/.sapwood && bundle install")
+  # copying config (temp until config is killed)
+  say("Copying config...")
+  config_dir = "#{home}/.sapwood/config"
+  system("cp #{config_dir}/sapwood.sample.yml #{config_dir}/sapwood.yml")
   # finish up
   msg  = "\nAll done! Just run <%= color('sapwood start', [:green, :bold]) %> "
   msg += "to start the server."
   say(msg)
+# ======================================
+# Start Rails Server
+# ======================================
+when 'start'
+  pwd = `pwd`
+  system("cd #{home}/.sapwood && bundle exec rails s -d -p 4141")
+  system("cd #{pwd}")
 # ======================================
 # Update Development App
 # ======================================
