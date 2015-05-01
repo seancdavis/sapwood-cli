@@ -45,7 +45,9 @@ when 'install'
   db_file = "#{home}/.sapwood/config/database.yml"
   File.open(db_file, 'w+') { |f| f.write(db_config) }
   # finish up
-  say("All done! Just run `sapwood start` to start the server.")
+  msg  = "All done! Just run <%= color('sapwood start', [:green, :bold]) %> "
+  msg += "to start the server."
+  say(msg)
 # ======================================
 # Update Development App
 # ======================================
