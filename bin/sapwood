@@ -48,7 +48,7 @@ when 'install'
   say("Installing gems...")
   system("cd #{home}/.sapwood && bundle install")
   # finish up
-  msg  = "All done! Just run <%= color('sapwood start', [:green, :bold]) %> "
+  msg  = "\nAll done! Just run <%= color('sapwood start', [:green, :bold]) %> "
   msg += "to start the server."
   say(msg)
 # ======================================
@@ -59,6 +59,7 @@ when 'update'
   system("cd #{home}/.sapwood && git fetch && git pull origin master")
   system("cd #{home}/.sapwood && bundle install")
   system("cd #{pwd}")
+  say("\nYou're all up to date!")
 # ======================================
 # Missing Argument
 # ======================================
