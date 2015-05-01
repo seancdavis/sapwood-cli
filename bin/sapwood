@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require 'highline/import'
+
+action = ARGV[0].nil? ? nil : ARGV[0].downcase
+
+case action
+# ======================================
+# Install Development App
+# ======================================
+when 'install'
+  # verify existance of production database (by asking)
+  choose do |menu|
+    menu.prompt = "Do you have a production database installed and running? "
+    menu.choice(:yes) do
+      say("\nAwesome! Let's get some info about that database...")
+    end
+    menu.choices(:no) do
+      msg  = "\n<%= color('Oh no!', [:bold, :red]) %> "
+      msg += "You need to get your production app up and running first."
+      msg += "\nThis is just a way to access production data."
+      say(msg)
+      exit
+    end
+  end
+  # gather database info
+  db_host = ask("Host (production IP address): ")
+  db_port = ask("PostgreSQL Port (usually it's 5432): ")
+  db_name = ask("Database Name: ")
+  db_username = ask("PostgreSQL User: ")
+  db_password = ask("User's Password (will show as Xs): ") { |q| q.echo = "x" }
+  # clone the repo
+  say("Good stuff, bro! Now, I shall install the developer app...\n")
+  system "git clone git@github.com:seancdavis/sapwood-developer.git ~/.sapwood"
+  # write the database config
+  say("Adding database config...")
+  db_config = "development:\n  adapter: postgresql\n  encoding: unicode"
+  db_config += "\n  pool: 5\n  host: #{db_host}\n  username: #{db_username}"
+  db_config += "\n  password: #{db_password}\n  port: #{db_port}\n"
+  db_file = "#{File.expand_path('~')}/.sapwood/config/database.yml"
+  File.open(db_file, 'w+') { |f| f.write(db_config) }
+  # finish up
+  say("All done! Just run `sapwood start` to start the server.")
+when nil, ''
+  puts "Usage: sapwood [ACTION]"
+  exit
+else
+  puts "Couldn't find the action: #{action}"
+  exit
+end
