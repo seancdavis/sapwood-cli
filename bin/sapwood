@@ -4,6 +4,10 @@ require 'highline/import'
 
 action = ARGV[0].nil? ? nil : ARGV[0].downcase
 
+def home
+  File.expand_path('~')
+end
+
 case action
 # ======================================
 # Install Development App
@@ -38,10 +42,20 @@ when 'install'
   db_config = "development:\n  adapter: postgresql\n  encoding: unicode"
   db_config += "\n  pool: 5\n  host: #{db_host}\n  username: #{db_username}"
   db_config += "\n  password: #{db_password}\n  port: #{db_port}\n"
-  db_file = "#{File.expand_path('~')}/.sapwood/config/database.yml"
+  db_file = "#{home}/.sapwood/config/database.yml"
   File.open(db_file, 'w+') { |f| f.write(db_config) }
   # finish up
   say("All done! Just run `sapwood start` to start the server.")
+# ======================================
+# Update Development App
+# ======================================
+when 'update'
+  pwd = `pwd`
+  system("cd #{home}/.sapwood && git fetch && git pull origin master")
+  system("cd #{pwd}")
+# ======================================
+# Missing Argument
+# ======================================
 when nil, ''
   puts "Usage: sapwood [ACTION]"
   exit
