@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Sapwood::VERSION
   spec.authors       = ["Sean C Davis"]
   spec.email         = ["scdavis41@gmail.com"]
-  spec.summary       = %q{}
+  spec.summary       = %q{Command-line interface for working with Sapwood}
   spec.description   = %q{}
   spec.homepage      = ""
   spec.license       = "MIT"
