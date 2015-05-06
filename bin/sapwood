@@ -108,6 +108,11 @@ when 'link'
   system("ln -sv #{pwd} #{sapwood}/projects")
   system("cd #{sapwood} && bundle exec rake sapwood:project:symlink[#{slug}]")
 # ======================================
+# Watch the Sapwood Log
+# ======================================
+when 'log'
+  system("tail -f #{home}/.sapwood/log/development.log")
+# ======================================
 # Missing Argument
 # ======================================
 when nil, ''
