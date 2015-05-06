@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'highline/import'
+require 'fileutils'
 
 action = ARGV[0].nil? ? nil : ARGV[0].downcase
 
@@ -60,7 +61,7 @@ when 'install'
 # Start Rails Server
 # ======================================
 when 'start'
-  pwd = `pwd`
+  pwd = `pwd`.gsub(/\n/, '')
   say("=> Booting Sapwood server...")
   system("cd #{home}/.sapwood && bundle exec rails s -d -p 4141")
   system("cd #{pwd}")
@@ -81,7 +82,7 @@ when 'restart'
   say("=> Sapwood server going down...")
   system("kill $(lsof -ti :4141)")
   say("=> Done.")
-  pwd = `pwd`
+  pwd = `pwd`.gsub(/\n/, '')
   say("=> Booting Sapwood server...")
   system("cd #{home}/.sapwood && bundle exec rails s -d -p 4141")
   system("cd #{pwd}")
@@ -92,11 +93,20 @@ when 'restart'
 # Update Development App
 # ======================================
 when 'update'
-  pwd = `pwd`
+  pwd = `pwd`.gsub(/\n/, '')
   system("cd #{home}/.sapwood && git fetch && git pull origin master")
   system("cd #{home}/.sapwood && bundle install")
   system("cd #{pwd}")
   say("\nYou're all up to date!")
+# ======================================
+# Link Project to Sapwood
+# ======================================
+when 'link'
+  pwd = `pwd`.gsub(/\n/, '')
+  slug = pwd.split('/').last
+  sapwood = "#{home}/.sapwood"
+  system("ln -sv #{pwd} #{sapwood}/projects")
+  system("cd #{sapwood} && bundle exec rake sapwood:project:symlink[#{slug}]")
 # ======================================
 # Missing Argument
 # ======================================
